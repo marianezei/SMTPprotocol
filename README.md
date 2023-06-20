@@ -10,12 +10,12 @@ Entregas:
 
 16/06/2023: 
 
-- [ ] Entender como é o funcionamento do protocolo SMTP;
-- [ ] Versão inicial, implementação do cliente que utiliza o protocolo SMTP (utilizando biblioteca net/smtp);
+- [x] Entender como é o funcionamento do protocolo SMTP;
+- [x] Versão inicial, implementação do cliente que utiliza o protocolo SMTP (utilizando biblioteca net/smtp);
 
 23/06/2023: 
 
-- [ ] Versão final implementação do servidor com um subconjunto do protocolo SMTP;
-- [ ] Implementação do cliente para simular o envio de emails através do protocolo criado (sem uso da biblioteca);
-- [ ] Adicionar testes de carga - envio de emails concorrentes;
+- [x] Versão final implementação do servidor com um subconjunto do protocolo SMTP;
+- [x] Implementação do cliente para simular o envio de emails através do protocolo criado (sem uso da biblioteca);
+- [x] Adicionar testes de carga - envio de emails concorrentes;
 
