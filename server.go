@@ -63,7 +63,7 @@ func handleClient(conn net.Conn) {
 		case "DATA":
 			conn.Write([]byte("354 DATA OK\r\n"))
 		case "QUIT":
-			conn.Write([]byte("221 Bye\r\n"))
+			conn.Write([]byte("221 Bye ----------------\r\n"))
 			return
 		default:
 			conn.Write([]byte("500 Comando não suportado!\r\n"))

@@ -36,11 +36,17 @@ func main() {
 		body + "\r\n"
 
 	
-	sendMail(addr, from, to, msg)
+	for i := 0; i < 5; i++ {
+		
+		go sendMail(addr, from, to, msg)
+		go sendMail(addr, from, to2, msg)
+		go sendMail(addr, from, to3, msg)
+		
+		time.Sleep(2 * time.Second)
+	}
 
-	sendMail(addr, from, to2, msg)
-
-	sendMail(addr, from, to3, msg)
+	time.Sleep(2 * time.Second)
+	fmt.Println("Todos os emails foram enviados!")
 	
 }
 
