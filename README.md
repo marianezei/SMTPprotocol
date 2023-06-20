@@ -8,4 +8,4 @@ Entregas:
 
 16/06/2023 - implementação do protocolo em go;
 
-23/06/2023 - aprimoramento da implementação adicionando o recurso de anexos;
+23/06/2023 - adicionar testes de carga - mails concorrentes;
