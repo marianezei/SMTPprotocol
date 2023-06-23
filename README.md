@@ -4,8 +4,18 @@ Projeto para a disciplina de Programação Concorrente com o objetivo de impleme
 
 Entregas:
 
-09/06/2023 - programação das atividades;
+09/06/2023:
 
-16/06/2023 - implementação do protocolo em go;
+- [x] Programação das atividades;
 
-23/06/2023 - adicionar testes de carga - mails concorrentes;
+16/06/2023: 
+
+- [x] Entender como é o funcionamento do protocolo SMTP;
+- [x] Versão inicial, implementação do cliente que utiliza o protocolo SMTP (utilizando biblioteca net/smtp);
+
+23/06/2023: 
+
+- [x] Versão final implementação do servidor com um subconjunto do protocolo SMTP;
+- [x] Implementação do cliente para simular o envio de emails através do protocolo criado (sem uso da biblioteca);
+- [x] Adicionar testes de carga - envio de emails concorrentes;
+
