@@ -15,7 +15,7 @@ func main() {
 	from := "seu_email@example.com"
 
 	// Define o(s) endereço(s) de email do(s) destinatário(s)
-	to := []string{"destinatario1@example.com"}
+	to1 := []string{"destinatario1@example.com"}
 
 	to2 := []string{"destinatario2@example.com"}
 
@@ -23,24 +23,36 @@ func main() {
 
 	// Define o conteúdo do email
 	subject := "Assunto do email"
-	body := "Corpo do email"
+	body1 := "Corpo do email 1"
+	body2 := "Corpo do email 2"
+	body3 := "Corpo do email 3"
 
 	// Monta o cabeçalho do email
-	msg := "From: " + from + "\r\n" +
-		"To: " + to[0]
-	for i := 1; i < len(to); i++ {
-		msg += "," + to[i]
+	msg1 := "From: " + from + "\r\n" +
+		"To: " + to1[0]
+	for i := 1; i < len(to1); i++ {
+		msg1 += "," + to1[i]
 	}
-	msg += "\r\n" +
-		"Subject: " + subject + "\r\n\r\n" +
-		body + "\r\n"
+	msg1+= "subject: " + subject +"\r\n" + "body: " + body1
+	msg2 := "From: " + from + "\r\n" +
+		"To: " + to2[0]
+	for i := 1; i < len(to2); i++ {
+		msg2 += "," + to2[i]
+	}
+	msg2+= "subject: " + subject +"\r\n" + "body: " + body2
+	msg3 := "From: " + from + "\r\n" +
+		"To: " + to2[0]
+	for i := 1; i < len(to3); i++ {
+		msg3 += "," + to3[i]
+	}
+	msg3+= "subject: " + subject +"\r\n" + "body: " + body3
 
 	
 	for i := 0; i < 5; i++ {
 		
-		go sendMail(addr, from, to, msg)
-		go sendMail(addr, from, to2, msg)
-		go sendMail(addr, from, to3, msg)
+		go sendMail(addr, from, to1, msg1)
+		go sendMail(addr, from, to2, msg2)
+		go sendMail(addr, from, to3, msg3)
 		
 		time.Sleep(2 * time.Second)
 	}
@@ -51,7 +63,6 @@ func main() {
 }
 
 func sendMail(addr string, from string, to []string, msg string) error {
-	// validação de emails se estão no DB
 
 	client, err := dial(addr)
 	if err != nil {
@@ -76,7 +87,7 @@ func sendMail(addr string, from string, to []string, msg string) error {
 		} 
 	}
 
-	err1 := client.data()
+	err1 := client.data(msg)
 	if err1 != nil {
 		fmt.Println("Erro ao iniciar a transferência de dados:", err1)
 		return err1
@@ -85,7 +96,7 @@ func sendMail(addr string, from string, to []string, msg string) error {
 
 	fmt.Println("Email enviado com sucesso!")
 
-	err = client.quit()
+	err = client.quit(from)
 	if err != nil {
 		fmt.Println("Erro ao sair do servidor SMTP:", err)
 		return err
@@ -99,7 +110,6 @@ type Client struct {
 	// Text is the textproto.Conn used by the Client. It is exported to allow for
 	// clients to add extensions.
 	Text *textproto.Conn
-	// keep a reference to the connection so it can be used to create a TLS
 	// connection later
 	conn net.Conn
 
@@ -150,31 +160,36 @@ func dial(addr string) (*Client, error) {
 	return newClient(conn, host)
 }
 
-func (c *Client) helo() error {
+func (c *Client) helo(from string) error {
 	_, _, err := c.cmd(250, "EHLO")
+	fmt.Println("EHLO -> from: " + from)
 
 	return err
 }
 
 func (c *Client) mail(from string) error {
 
-	if err := c.helo(); err != nil {
+	if err := c.helo(from); err != nil {
 		return err
 	}
 	
 	_, _, err := c.cmd(250, "MAIL")
-
+	fmt.Println("MAIL -> from: " + from)
+	
 	return err
 }
 
 func (c *Client) rcpt(to string) error {
-	_, _, err := c.cmd(250, "RCPT " + to)
+	_, _, err := c.cmd(250, "RCPT")
+
+	fmt.Println("RCPT -> to " + to)
 
 	return err
 }
 
-func (c *Client) data() error {
+func (c *Client) data(msg string) error {
 	_, _, err := c.cmd(354, "DATA")
+	fmt.Println("DATA -> to " + msg)
 
 	if err != nil {
 		return err
@@ -182,9 +197,11 @@ func (c *Client) data() error {
 	return err
 }
 
-func (c *Client) quit() error {
+func (c *Client) quit(from string) error {
 
 	_, _, err := c.cmd(221, "QUIT")
+	fmt.Println("QUIT -> from " + from)
+
 	if err != nil {
 		return err
 	}
